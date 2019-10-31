@@ -8,7 +8,7 @@ public class MemberDAO {
 	public int memberJoin(Connection con, MemberDTO memberDTO) throws Exception{
 		
 		String sql = "insert into member "
-				+ "values(?,?,?,?,?,1)";
+				+ "values(?,?,?,?,?,3)";
 		
 		PreparedStatement st = con.prepareStatement(sql);
 		
