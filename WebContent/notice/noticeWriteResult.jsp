@@ -24,13 +24,14 @@
 	String msg = "등록 실패";
 	if(result > 0){
 		msg = "등록 성공";
+		response.sendRedirect("./noticeList.jsp");
+	}
+	else{
 		request.setAttribute("msg", msg);
 		request.setAttribute("path", "./noticeList.jsp");
 		RequestDispatcher view = request.getRequestDispatcher("../common/common_result.jsp");
 		view.forward(request, response);
 	}
-	else
-		response.sendRedirect("./noticeList.jsp");
 	
 	
 %>
