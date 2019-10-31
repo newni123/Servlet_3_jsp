@@ -51,7 +51,6 @@ public class NoticeDAOTest {
 		noticeDTO.setTitle("Test6");
 		noticeDTO.setWriter("Writer6");
 		noticeDTO.setContents("Content6");
-		noticeDTO.setHit(0);
 		noticeDAO.noticeWrite(conn, noticeDTO);
 	}
 
