@@ -43,8 +43,8 @@ public class NoticeDAOTest {
 		conn.close();
 	}
 	
-	 @Test
-	public void test() throws Exception {
+	//@Test
+	public void writeTest() throws Exception {
 		NoticeDAO noticeDAO = new NoticeDAO();
 		Connection conn = DBConnector.getConnection();
 		NoticeDTO noticeDTO = new NoticeDTO();
