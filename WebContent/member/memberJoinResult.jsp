@@ -3,35 +3,30 @@
 <%@page import="com.iu.member.MemberDAO"%>
 <%@page import="com.iu.member.MemberDTO"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
+	pageEncoding="UTF-8"%>
 <%
 	request.setCharacterEncoding("UTF-8");
 	response.setCharacterEncoding("UTF-8");
-	
+
 	MemberDTO memberDTO = new MemberDTO();
 	memberDTO.setId(request.getParameter("id"));
 	memberDTO.setPw(request.getParameter("pw"));
 	memberDTO.setName(request.getParameter("name"));
 	memberDTO.setEmail(request.getParameter("email"));
 	memberDTO.setPhone(request.getParameter("phone"));
-	
+
 	MemberDAO memberDAO = new MemberDAO();
 	Connection conn = DBConnector.getConnection();
-	//int result = memberDAO.memberJoin(conn,memberDTO);
-	int result = 0;
+	int result = memberDAO.memberJoin(conn, memberDTO);
 	String msg = "가입 실패";
-	if(result > 0){
+	conn.close();
+	if (result > 0) {
 		msg = "가입 성공";
-		response.sendRedirect("../index.jsp");
 	}
-	else{
-		request.setAttribute("msg", msg);
-		request.setAttribute("path", "../index.jsp");
-		RequestDispatcher view = request.getRequestDispatcher("../common/common_result.jsp");
-		view.forward(request, response);
-	}
-	
-	
+	request.setAttribute("msg", msg);
+	request.setAttribute("path", "../index.jsp");
+	RequestDispatcher view = request.getRequestDispatcher("../common/common_result.jsp");
+	view.forward(request, response);
 %>
 <!DOCTYPE html>
 <html>
