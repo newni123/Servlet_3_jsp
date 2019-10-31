@@ -6,7 +6,7 @@ import java.sql.ResultSet;
 import java.util.ArrayList;
 
 public class NoticeDAO {
-	
+
 	// 이전글 받아오기
 	public NoticeDTO noticeSelectPrev(Connection conn, int num) throws Exception {
 		String sql = "select * from notice where num = (select max(num) from notice where num < ?)";
@@ -27,6 +27,7 @@ public class NoticeDAO {
 		st.close();
 		return noticeDTO;
 	}
+
 	// 다음글 받아오기
 	public NoticeDTO noticeSelectNext(Connection conn, int num) throws Exception {
 		String sql = "select * from notice where num = (select min(num) from notice where num > ?)";
@@ -49,7 +50,7 @@ public class NoticeDAO {
 	}
 
 	// 마지막 글 글번호 가져오기
-	public int listCount(Connection conn) throws Exception {
+	public int lastSelect(Connection conn) throws Exception {
 		int result = 0;
 		String sql = "select max(num) from notice";
 		PreparedStatement st = conn.prepareStatement(sql);
@@ -82,40 +83,33 @@ public class NoticeDAO {
 		return result;
 	}
 
-	// List
-	public ArrayList<NoticeDTO> noticeList(Connection conn) throws Exception {
-		ArrayList<NoticeDTO> noticeDTOs = new ArrayList<NoticeDTO>();
-		String sql = "select * from notice order by num desc";
-		PreparedStatement st = conn.prepareStatement(sql);
-		ResultSet rs = st.executeQuery();
-		while (rs.next()) {
-			NoticeDTO noticeDTO = new NoticeDTO();
-			noticeDTO.setNum(rs.getInt("num"));
-			noticeDTO.setTitle(rs.getString("title"));
-			noticeDTO.setWriter(rs.getString("writer"));
-			noticeDTO.setReg_date(rs.getDate("reg_date"));
-			noticeDTO.setHit(rs.getInt("Hit"));
-			noticeDTOs.add(noticeDTO);
-		}
-		rs.close();
-		conn.close();
-		return noticeDTOs;
-	}
-
-	// Insert
-	public int noticeWrite(Connection conn, NoticeDTO noticeDTO) throws Exception {
-		String sql = "insert into notice values(notice_seq.nextval,?,?,?,sysdate,?)";
+	// noticeUpdate
+	public int noticeUpdate(Connection conn, NoticeDTO noticeDTO) throws Exception {
+		int result = 0;
+		String sql = "update notice set title = ?, writer = ?, contents = ? where num = ?";
 		PreparedStatement st = conn.prepareStatement(sql);
 		st.setString(1, noticeDTO.getTitle());
 		st.setString(2, noticeDTO.getWriter());
 		st.setString(3, noticeDTO.getContents());
-		st.setInt(4, noticeDTO.getHit());
+		st.setInt(4, noticeDTO.getNum());
+		result = st.executeUpdate();
+		st.close();
+		return result;
+	}
+
+	// noticeWriter
+	public int noticeWrite(Connection conn, NoticeDTO noticeDTO) throws Exception {
+		String sql = "insert into notice values(notice_seq.nextval,?,?,?,sysdate,0)";
+		PreparedStatement st = conn.prepareStatement(sql);
+		st.setString(1, noticeDTO.getTitle());
+		st.setString(2, noticeDTO.getWriter());
+		st.setString(3, noticeDTO.getContents());
 		int result = st.executeUpdate();
 		st.close();
 		return result;
 	}
 
-	// Notice Select
+	// noticeSelect
 	public NoticeDTO noticeSelect(Connection conn, int num) throws Exception {
 		String sql = "select * from notice where num = ?";
 		PreparedStatement st = conn.prepareStatement(sql);
@@ -136,17 +130,24 @@ public class NoticeDAO {
 		return noticeDTO;
 	}
 
-	// Update
-	public int noticeUpdate(Connection conn, NoticeDTO noticeDTO) throws Exception {
-		int result = 0;
-		String sql = "update notice set title = ?, writer = ?, contents = ? where num = ?";
+	// noticeList
+	public ArrayList<NoticeDTO> noticeList(Connection conn) throws Exception {
+		ArrayList<NoticeDTO> noticeDTOs = new ArrayList<NoticeDTO>();
+		String sql = "select * from notice order by num desc";
 		PreparedStatement st = conn.prepareStatement(sql);
-		st.setString(1, noticeDTO.getTitle());
-		st.setString(2, noticeDTO.getWriter());
-		st.setString(3, noticeDTO.getContents());
-		st.setInt(4, noticeDTO.getNum());
-		result = st.executeUpdate();
-		st.close();
-		return result;
+		ResultSet rs = st.executeQuery();
+		while (rs.next()) {
+			NoticeDTO noticeDTO = new NoticeDTO();
+			noticeDTO.setNum(rs.getInt("num"));
+			noticeDTO.setTitle(rs.getString("title"));
+			noticeDTO.setWriter(rs.getString("writer"));
+			noticeDTO.setReg_date(rs.getDate("reg_date"));
+			noticeDTO.setHit(rs.getInt("Hit"));
+			noticeDTOs.add(noticeDTO);
+		}
+		rs.close();
+		conn.close();
+		return noticeDTOs;
 	}
+
 }

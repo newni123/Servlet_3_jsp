@@ -19,17 +19,17 @@
 	noticeDTO = noticeDAO.noticeSelect(conn, num);
 	noticeDTO2 = noticeDAO.noticeSelectPrev(conn, num);
 	noticeDTO3 = noticeDAO.noticeSelectNext(conn, num);
-	int count = noticeDAO.listCount(conn);
-	int first = noticeDAO.firstSelect(conn);
+	int last = noticeDAO.lastSelect(conn); // 마지막 글번호
+	int first = noticeDAO.firstSelect(conn); // 첫 글 번호
 	conn.close();
 	 if(noticeDTO == null){
 			response.sendRedirect("./noticeList.jsp");
 		}
-	 else if(noticeDTO != null && noticeDTO.getNum() > 1 && noticeDTO.getNum() < count){ // 이전글,다음글 다있는경우
+	 else if(noticeDTO != null && noticeDTO.getNum() > 1 && noticeDTO.getNum() < last){ // 이전글,다음글 다있는경우
 		request.setAttribute("noticeDTO",noticeDTO);
 		request.setAttribute("noticeDTO2",noticeDTO2);
 		request.setAttribute("noticeDTO3",noticeDTO3);
-		request.setAttribute("count", count);
+		request.setAttribute("last", last);
 		request.setAttribute("first", first);
 		RequestDispatcher view = request.getRequestDispatcher("./noticeSelectResult.jsp");
 		view.forward(request, response);
@@ -38,15 +38,15 @@
 	 else if(noticeDTO != null && noticeDTO.getNum() == 1){ // 다음글은 있는데 이전글은 없는 경우 (처음 글)
 			request.setAttribute("noticeDTO",noticeDTO);
 			request.setAttribute("noticeDTO3",noticeDTO3);
-			request.setAttribute("count", count);
+			request.setAttribute("last", last);
 			request.setAttribute("first", first);
 			RequestDispatcher view = request.getRequestDispatcher("./noticeSelectResult.jsp");
 			view.forward(request, response);
 	 } 
-	 else if(noticeDTO != null && noticeDTO.getNum() == count){ // 이전글은 있는데 다음글은 없는 경우(마지막 글)
+	 else if(noticeDTO != null && noticeDTO.getNum() == last){ // 이전글은 있는데 다음글은 없는 경우(마지막 글)
 			request.setAttribute("noticeDTO",noticeDTO);
 			request.setAttribute("noticeDTO2",noticeDTO2);
-			request.setAttribute("count", count);
+			request.setAttribute("last", last);
 			request.setAttribute("first", first);
 			RequestDispatcher view = request.getRequestDispatcher("./noticeSelectResult.jsp");
 			view.forward(request, response);
