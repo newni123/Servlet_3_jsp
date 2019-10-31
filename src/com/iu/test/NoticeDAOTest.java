@@ -14,7 +14,7 @@ import com.iu.point.PointDAO;
 import com.iu.util.DBConnector;
 
 public class NoticeDAOTest {
-	@Test
+	//@Test
 	public void deleteTest() throws Exception{
 		Connection conn = DBConnector.getConnection();
 		NoticeDAO noticeDAO = new NoticeDAO();
@@ -43,15 +43,17 @@ public class NoticeDAOTest {
 		conn.close();
 	}
 	
-	//@Test
+	 @Test
 	public void test() throws Exception {
 		NoticeDAO noticeDAO = new NoticeDAO();
 		Connection conn = DBConnector.getConnection();
 		NoticeDTO noticeDTO = new NoticeDTO();
-		noticeDTO.setTitle("Test6");
-		noticeDTO.setWriter("Writer6");
-		noticeDTO.setContents("Content6");
+		noticeDTO.setTitle("Test16");
+		noticeDTO.setWriter("Writer16");
+		noticeDTO.setContents("Content16");
 		noticeDAO.noticeWrite(conn, noticeDTO);
+		int result = noticeDAO.noticeWrite(conn, noticeDTO);
+		assertEquals(result, 1);
 	}
 
 }
