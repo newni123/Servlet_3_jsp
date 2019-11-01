@@ -1,9 +1,12 @@
+<%@page import="com.iu.member.MemberDTO"%>
 <%@page import="com.iu.util.DBConnector"%>
 <%@page import="java.sql.Connection"%>
 <%@page import="com.iu.notice.NoticeDAO"%>
 <%@page import="com.iu.notice.NoticeDTO"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ include file="../layout/boot.jsp"%>
+<%@ include file="../layout/nav.jsp"%>
 <%
 	request.setCharacterEncoding("UTF-8");
 	response.setCharacterEncoding("UTF-8");
@@ -14,20 +17,20 @@
 	Connection conn = DBConnector.getConnection();
 	noticeDTO = noticeDAO.noticeSelect(conn, num);
 	conn.close();
+	
+	if( memberDTO == null || memberDTO.getGrade() != 0 || !memberDTO.getId().equals(noticeDTO.getWriter())){
+		request.setAttribute("msg", "권한이 없습니다.");
+		request.setAttribute("path", "./noticeList.jsp");
+		RequestDispatcher view = request.getRequestDispatcher("../common/common_result.jsp");
+		view.forward(request, response);		
+	}
+	
 %>
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
-<!-- Latest compiled and minified CSS -->
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
-
-<!-- jQuery library -->
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
-
-<!-- Latest compiled JavaScript -->
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
 </head>
 <body>
 	<div class="container">
@@ -42,7 +45,7 @@
 			<div class="form-group">
 				<label for="writer">writer:</label> <input type="text"
 					class="form-control" id="writer" placeholder="Enter writer"
-					name="writer" value="<%=noticeDTO.getWriter()%>">
+					name="writer" value="<%=noticeDTO.getWriter()%>" readonly="readonly">
 			</div>
 			<div class="form-group">
 				<label for="contents">contents:</label>

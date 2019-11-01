@@ -9,7 +9,6 @@
 	request.setCharacterEncoding("UTF-8");
 	response.setCharacterEncoding("UTF-8");
 	int num = Integer.parseInt(request.getParameter("num"));
-	
 	NoticeDAO noticeDAO = new NoticeDAO();
 	NoticeDTO noticeDTO = new NoticeDTO();
 	NoticeDTO noticeDTO2 = new NoticeDTO(); // 이전글

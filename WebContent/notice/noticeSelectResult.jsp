@@ -1,3 +1,4 @@
+<%@page import="com.iu.member.MemberDTO"%>
 <%@page import="java.util.ArrayList"%>
 <%@page import="com.iu.notice.NoticeDTO"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
@@ -14,8 +15,9 @@
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
+<%@ include file="../layout/boot.jsp"%>
+<%@ include file="../layout/nav.jsp"%>
 <link href="../css/layout.css" rel="stylesheet">
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 </head>
 <body>
 	<section>
@@ -24,10 +26,10 @@
 		<table class="t1">
 			<tr class="head">
 				<td></td>
-				<td class="sub">SUBJECT</td>
-				<td class="name">NAME</td>
-				<td class="date">DATE</td>
-				<td class="hit">HIT</td>
+				<td class="sub" style="text-align: center;">SUBJECT</td>
+				<td class="name" style="text-align: center;">NAME</td>
+				<td class="date" style="text-align: center;">DATE</td>
+				<td class="hit" style="text-align: center;">HIT</td>
 			</tr>
 			<tr>
 				<td colspan="2"><%=noticeDTO.getTitle()%></td>
@@ -39,13 +41,14 @@
 				<%noticeDTO.setContents(noticeDTO.getContents().replace("\r\n","<br>")); %>
 				<td colspan="5" class="contents"><%=noticeDTO.getContents()%></td>
 			</tr>
+			<%if (memberDTO != null && memberDTO.getGrade() == 0 && memberDTO.getId().equals(noticeDTO.getWriter())) {%>
 			<tr>
-				<td colspan="5"><a class="btn btn-primary"
-					href="./noticeUpdate.jsp?num=<%=noticeDTO.getNum()%>"
+				<td colspan="5"><a href="./noticeUpdate.jsp?num=<%=noticeDTO.getNum()%>"
 					style="float: right; margin-right: 20px;">Update</a>
 					<a href="#" id="del" style="float: left; margin-left: 20px;">Delete</a>
 				</td>
 			</tr>
+			<%} %>
 			<%if (noticeDTO.getNum() > first && noticeDTO.getNum() < last) { // 이전글 띄우기(가장 처음글이면 띄우지 않음) %>
 			<tr>
 				<td>next</td>			

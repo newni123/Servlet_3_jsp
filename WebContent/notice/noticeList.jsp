@@ -1,3 +1,4 @@
+<%@page import="com.iu.member.MemberDTO"%>
 <%@page import="com.iu.notice.NoticeDAO"%>
 <%@page import="com.iu.util.DBConnector"%>
 <%@page import="java.sql.Connection"%>
@@ -13,82 +14,29 @@
 	Connection conn = DBConnector.getConnection();
 	ArrayList<NoticeDTO> noticeDTOs = noticeDAO.noticeList(conn);
 	conn.close();
+	
+	// 쿠키 발행
+	// 쿠키 생성시 생성자에 키와 밸류 입력
+	Cookie cookie = new Cookie("name","iu");
+	// 쿠키가 적용되는 path 설정 : 보통 context path 적용
+	cookie.setPath(request.getContextPath());
+	// 쿠키의 유효시간
+	// 단위는 초단위
+	// 설정을 하지 않으면 웹브라우저가 종료될 때 같이 종료
+	cookie.setMaxAge(60*60);
+	// 쿠키를 클라이언트로 전송
+	response.addCookie(cookie);
+	
+	//MemberDTO memberDTO = (MemberDTO)session.getAttribute("member"); // include file중 nav에 있으므로 뺌
 %>
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
-<style type="text/css">
-.pad {
-	padding-top: 43px;
-	font-size: 30px;
-}
-
-a {
-	color: rgb(50, 50, 50);
-	text-decoration: none;
-}
-
-h1 {
-	text-align: center;
-}
-
-.head {
-	background-color: rgb(37, 37, 37);
-	color: white;
-	font-weight: bold;
-}
-
-.t1 {
-	margin: 0 auto;
-	border-collapse: collapse;
-	width: 920px;
-}
-
-tr {
-	background-color: white;
-	border-top: 3.5px solid rgb(241, 241, 241);
-	padding: 20px;
-	height: 50px;
-	font-size: small;
-}
-
-td {
-	text-align: center;
-}
-
-.no {
-	width: 10%;
-}
-
-.sub {
-	width: 60%;
-}
-
-.name {
-	width: 10%;
-}
-
-.date {
-	width: 10%;
-}
-
-.hit {
-	width: 10%;
-}
-
-.td1 {
-	text-align: center;
-	letter-spacing: 5px;
-}
-.contents{
-	padding: 10px;
-}
-body {
-	background-color: rgb(241, 241, 241);
-}
-</style>
+<%@ include file="../layout/boot.jsp"%>
+<%@ include file="../layout/nav.jsp"%>
+<link href="../css/layout.css" rel="stylesheet">
 </head>
 </head>
 <body>
@@ -98,11 +46,11 @@ body {
 		<table class="t1">
 			<thead>
 				<tr class="head">
-					<th class=no>NO</th>
-					<th class=sub>SUBJECT</th>
-					<th class=name>WRITE</th>
-					<th class=date>DATE</th>
-					<th class=hit>HIT</th>
+					<th class=no style="text-align: center;">NO</th>
+					<th class=sub style="text-align: center;">SUBJECT</th>
+					<th class=name style="text-align: center;">WRITE</th>
+					<th class=date style="text-align: center;">DATE</th>
+					<th class=hit style="text-align: center;">HIT</th>
 				</tr>
 			</thead>
 			<tbody>
@@ -120,10 +68,12 @@ body {
 				<%
 					}
 				%>
+				<%if (memberDTO != null && memberDTO.getGrade() == 0){ %>
 				<tr>
 					<td colspan="5"><a href="./noticeWrite.jsp"
 						style="float: right; margin-right: 20px;" class="btn btn-primary">Write</a></td>
 				</tr>
+				<%} %>
 			</tbody>
 		</table>
 
