@@ -10,11 +10,16 @@
 
 	MemberDTO memberDTO = new MemberDTO();
 	memberDTO.setId(request.getParameter("id"));
+	if (request.getParameter("id") == null) {
+		request.setAttribute("msg", "잘못된 접근");
+		request.setAttribute("path", "../index.jsp");
+		RequestDispatcher view = request.getRequestDispatcher("../common/common_result.jsp");
+		view.forward(request, response);
+	}
 	memberDTO.setPw(request.getParameter("pw"));
 	memberDTO.setName(request.getParameter("name"));
 	memberDTO.setEmail(request.getParameter("email"));
 	memberDTO.setPhone(request.getParameter("phone"));
-
 	MemberDAO memberDAO = new MemberDAO();
 	Connection conn = DBConnector.getConnection();
 	int result = memberDAO.memberJoin(conn, memberDTO);

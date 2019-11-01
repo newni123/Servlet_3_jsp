@@ -5,10 +5,16 @@
 	pageEncoding="UTF-8"%>
 <%
 	NoticeDTO noticeDTO = (NoticeDTO) request.getAttribute("noticeDTO");
+	if (noticeDTO == null) {
+		request.setAttribute("msg", "잘못된 접근");
+		request.setAttribute("path", "./noticeList.jsp");
+		RequestDispatcher view = request.getRequestDispatcher("../common/common_result.jsp");
+		view.forward(request, response);
+	}
 	NoticeDTO noticeDTO2 = (NoticeDTO) request.getAttribute("noticeDTO2");
 	NoticeDTO noticeDTO3 = (NoticeDTO) request.getAttribute("noticeDTO3");
-	int last = (int)request.getAttribute("last");
-	int first = (int)request.getAttribute("first");
+	int last = (int) request.getAttribute("last");
+	int first = (int) request.getAttribute("first");
 %>
 <!DOCTYPE html>
 <html>

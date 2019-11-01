@@ -8,6 +8,12 @@
 <%
 	request.setCharacterEncoding("UTF-8");
 	response.setCharacterEncoding("UTF-8");
+	if (request.getParameter("num") == null) {
+		request.setAttribute("msg", "잘못된 접근");
+		request.setAttribute("path", "./noticeList.jsp");
+		RequestDispatcher view = request.getRequestDispatcher("../common/common_result.jsp");
+		view.forward(request, response);
+	}
 	int num = Integer.parseInt(request.getParameter("num"));
 	NoticeDAO noticeDAO = new NoticeDAO();
 	NoticeDTO noticeDTO = new NoticeDTO();

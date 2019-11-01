@@ -7,6 +7,12 @@
 <%
 	MemberDAO memberDAO = new MemberDAO();
 	MemberDTO memberDTO = (MemberDTO)session.getAttribute("member");
+	if (session.getAttribute("member") == null) {
+		request.setAttribute("msg", "잘못된 접근");
+		request.setAttribute("path", "../index.jsp");
+		RequestDispatcher view = request.getRequestDispatcher("../common/common_result.jsp");
+		view.forward(request, response);
+	}
 	Connection conn = DBConnector.getConnection();
 	int result = memberDAO.memberDelete(conn, memberDTO.getId());
 	conn.close();
