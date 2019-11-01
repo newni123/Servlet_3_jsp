@@ -39,7 +39,7 @@
 <link href="../css/layout.css" rel="stylesheet">
 </head>
 </head>
-<body>
+<body style = "padding-bottom: 60px;">
 	<h1 class="pad"><a href="./noticeList.jsp">NOTICE</a></h1>
 	<br />
 	<div class="container">
